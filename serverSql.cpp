@@ -7,6 +7,16 @@
 		Content-Type: text/html; charset=UTF-8\n \
 		Content-language: it\n "
 
+static int callback(void *punt, int count, char **data, char **columns) {
+	sprintf(punt,"%s<tr>",punt);
+	//Manca riga con nomi delle colonne
+	for(int i=0;i<count;i++) {
+		sprintf(punt,"%s<td>%s</td>",punt,data[i]);
+	}
+	sprintf(punt,"%s</tr>",punt);
+	return 0;
+}
+
 int main(int argc, char* argv[]) {
 	char* headerHtml;
 	char queryResult[MAX_BUFFER+1];
@@ -47,7 +57,7 @@ int main(int argc, char* argv[]) {
 	sprintf(queryResult,"<table>");
 	char* punt;
 	punt = queryResult + lenstr(queryResult);
-	sqlite3_exec(conn,query,foo,NULL,&error);
+	sqlite3_exec(conn,query,callback,punt,&error);
 	sprintf(queryResult,"%s</table>",queryResult);
 	sqlite3_close(conn);
 	
