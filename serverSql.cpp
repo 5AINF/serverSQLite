@@ -12,7 +12,7 @@ int callback(void *s, int count, char **data, char **columns) {
 	sprintf(punt,"%s<tr>",punt);
 	//Manca riga con nomi delle colonne
 	for(int i=0;i<count;i++) {
-		sprintf(punt,"%s<td>%s</td>",punt,data[i]);
+		sprintf(punt,"%s<td>%s</td>",punt,data[i]?data[i]:"NULL");
 	}
 	sprintf(punt,"%s</tr>",punt);
 	return 0;
