@@ -9,6 +9,7 @@
 
 int callback(void *s, int count, char **data, char **columns) {
 	char* punt = s;
+	punt = punt + lenstr(punt);
 	sprintf(punt,"%s<tr>",punt);
 	//Manca riga con nomi delle colonne
 	for(int i=0;i<count;i++) {
@@ -58,7 +59,7 @@ int main(int argc, char* argv[]) {
 	sprintf(queryResult,"<table>");
 	char* punt;
 	punt = queryResult + lenstr(queryResult);
-	sqlite3_exec(conn,query,callback,(punt+lenstr(punt)),&error);
+	sqlite3_exec(conn,query,callback,punt,&error);
 	sprintf(queryResult,"%s</table>",queryResult);
 	sqlite3_close(conn);
 	
