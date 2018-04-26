@@ -7,7 +7,7 @@
 		Content-Type: text/html; charset=UTF-8\n \
 		Content-language: it\n "
 
-static int callback(void *s, int count, char **data, char **columns) {
+int callback(void *s, int count, char **data, char **columns) {
 	char* punt = s;
 	sprintf(punt,"%s<tr>",punt);
 	//Manca riga con nomi delle colonne
@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
 	sprintf(queryResult,"<table>");
 	char* punt;
 	punt = queryResult + lenstr(queryResult);
-	sqlite3_exec(conn,query,callback,punt,&error);
+	sqlite3_exec(conn,query,callback,(punt+lenstr(punt)),&error);
 	sprintf(queryResult,"%s</table>",queryResult);
 	sqlite3_close(conn);
 	
