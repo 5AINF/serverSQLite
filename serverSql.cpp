@@ -1,6 +1,6 @@
 #include "socket_tcp.hpp"
 #include <stdio.h>
-#include <sqlite3.h>
+#include "sqlite3.h"
 #include <string.h>
 
 #define PORT 8080
@@ -13,7 +13,7 @@
 int callback(void *s, int count, char **data, char **columns) {
 	char* punt = (char*)s;
 	//Inserire nomi colonne
-	punt = punt + lenstr(punt);
+	punt = punt + strlen(punt);
 	sprintf(punt,"%s<tr>",punt);
 	for(int i=0;i<count;i++) {
 		sprintf(punt,"%s<td>%s</td>",punt,data[i]?data[i]:"NULL");
@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
 	char* msg;
 	
 	ServerTCP* myself = new ServerTCP(PORT,true);
-	Connection* conn = myself->accetta();
+	Connection* conn = myself->accept();
 	char* request = conn->receive();
 	
 	char buffer[MAX_BUFFER+1];
@@ -48,9 +48,9 @@ int main(int argc, char* argv[]) {
 	fclose(f);
 	
 	char* myTag = strstr(content, TAGSQL);
-	headerHtml = (char*)malloc(sizeof(char)*(lenstr(content)-lenstr(myTag));
-	memcpy(headerHtml,0,(lenstr(content)-lenstr(myTag)));
-	myTag += lenstr(TAGSQL);
+	headerHtml = (char*)malloc(sizeof(char)*(strlen(content)-strlen(myTag)));
+	memcpy(headerHtml,0,(strlen(content)-strlen(myTag)));
+	myTag += strlen(TAGSQL);
 	char* endTag;
 	for(endTag = myTag; *endTag != '"'; endTag++) { }
 	char* query = (char*)malloc(sizeof(char)*(endTag-myTag+1));
@@ -58,13 +58,13 @@ int main(int argc, char* argv[]) {
 	query[endTag-myTag]='\0';
 	
 	char* error;
-	footerHtml = dupstr(endTag+2);
+	footerHtml = strdup(endTag+2);
 	sprintf(queryResult,"<table>");
 	char* punt;
-	punt = queryResult + lenstr(queryResult);
-	sqlite3_exec(conn,query,callback,punt,&error);
+	punt = queryResult + strlen(queryResult);
+	sqlite3_exec(sql_conn,query,callback,punt,&error);
 	sprintf(queryResult,"%s</table>",queryResult);
-	sqlite3_close(conn);
+	sqlite3_close(sql_conn);
 	
 	sprintf(msg,"%s\n%s%s%s\n",HEADER,headerHtml,queryResult,footerHtml);
 	conn->send(msg);
