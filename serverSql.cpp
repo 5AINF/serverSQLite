@@ -74,26 +74,3 @@ int main(int argc, char* argv[]) {
 	free(footerHtml);
 	return 0;
 }
-
-void* foo(void* last) {
-	
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
