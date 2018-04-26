@@ -9,9 +9,15 @@
 
 int callback(void *s, int count, char **data, char **columns) {
 	char* punt = s;
+	if(lenstr(punt)==0) {
+		sprintf(punt,"%s<tr>",punt);
+		for(int i=0;i<count;i++) {
+			sprintf(punt,"%s<td>%s</td>",punt,columns[i]);
+		}
+		sprintf(punt,"%s</tr>",punt);
+	}		
 	punt = punt + lenstr(punt);
 	sprintf(punt,"%s<tr>",punt);
-	//Manca riga con nomi delle colonne
 	for(int i=0;i<count;i++) {
 		sprintf(punt,"%s<td>%s</td>",punt,data[i]?data[i]:"NULL");
 	}
