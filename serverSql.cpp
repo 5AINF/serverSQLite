@@ -1,6 +1,7 @@
 #include "socket_tcp.hpp"
 #include <stdio.h>
 #include <sqlite3.h>
+#include <string.h>
 
 #define PORT 8080
 #define MAX_BUFFER 4096
@@ -10,7 +11,7 @@
 		Content-language: it\n "
 
 int callback(void *s, int count, char **data, char **columns) {
-	char* punt = s;
+	char* punt = (char*)s;
 	//Inserire nomi colonne
 	punt = punt + lenstr(punt);
 	sprintf(punt,"%s<tr>",punt);
@@ -25,11 +26,11 @@ int main(int argc, char* argv[]) {
 	char* headerHtml;
 	char queryResult[MAX_BUFFER+1];
 	char* footerHtml;
-	char* msg:
+	char* msg;
 	
 	ServerTCP* myself = new ServerTCP(PORT,true);
 	Connection* conn = myself->accetta();
-	char* request = conn->ricevi();
+	char* request = conn->receive();
 	
 	char buffer[MAX_BUFFER+1];
 	char content[MAX_BUFFER+1];
@@ -47,8 +48,8 @@ int main(int argc, char* argv[]) {
 	fclose(f);
 	
 	char* myTag = strstr(content, TAGSQL);
-	headerHtml = (char*)malloc(sizeof(char)*(myTag));
-	memcpy(headerHtml,0,myTag);
+	headerHtml = (char*)malloc(sizeof(char)*(lenstr(content)-lenstr(myTag));
+	memcpy(headerHtml,0,(lenstr(content)-lenstr(myTag)));
 	myTag += lenstr(TAGSQL);
 	char* endTag;
 	for(endTag = myTag; *endTag != '"'; endTag++) { }
@@ -66,11 +67,11 @@ int main(int argc, char* argv[]) {
 	sqlite3_close(conn);
 	
 	sprintf(msg,"%s\n%s%s%s\n",HEADER,headerHtml,queryResult,footerHtml);
-	conn->invia(msg);
+	conn->send(msg);
 	
-	delete(sql_conn);
+	delete(&sql_conn);
 	delete(conn);
-	delete(myself);
+	delete(&myself);
 	free(request);
 	free(headerHtml);
 	free(queryResult);
