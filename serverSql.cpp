@@ -1,4 +1,6 @@
 #include "socket_tcp.hpp"
+#include <stdio.h>
+#include <sqlite3.h>
 
 #define PORT 8080
 #define MAX_BUFFER 4096
