@@ -7,7 +7,8 @@
 		Content-Type: text/html; charset=UTF-8\n \
 		Content-language: it\n "
 
-static int callback(void *punt, int count, char **data, char **columns) {
+static int callback(void *s, int count, char **data, char **columns) {
+	char* punt = s;
 	sprintf(punt,"%s<tr>",punt);
 	//Manca riga con nomi delle colonne
 	for(int i=0;i<count;i++) {
