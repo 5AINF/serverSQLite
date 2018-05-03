@@ -63,9 +63,6 @@ int main(int argc, char* argv[]) {
 	sqlite3_exec(sql_conn,query,callback,punt,&error);
 	sprintf(queryResult,"%s</table>",queryResult);
 	sqlite3_close(sql_conn);
-	printf("HEADER: %s\n", HEADER);
-	printf("header: %s\n", headerHtml);
-	printf("footer: %s\n", footerHtml);
 	sprintf(msg,"%s\n%s%s%s\n",HEADER,headerHtml,queryResult,footerHtml);
 	conn->send(msg);
 	
