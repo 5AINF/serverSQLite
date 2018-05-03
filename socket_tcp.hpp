@@ -47,7 +47,6 @@ class SocketTCP{
 
 SocketTCP::SocketTCP(){
 	sock_id = socket(AF_INET, SOCK_STREAM, 0);
-	printf("socket() = %d\n", sock_id);
 
 }
 
@@ -98,40 +97,29 @@ Connection::Connection(int id_conn, bool fuffa){
 }
 
 bool Connection::send_raw(void* msg, int len){
-	printf("Entering Connection::send_raw\tlen: %d\n", len);
-	printf("Before ::send()\n");
 	int ret = (int) ::send(conn_id, msg, (size_t)len, 0);
-	printf("After ::send()\n");
-	printf("send() = %d\n", ret);
 	return(ret != len);
 }
 
 void* Connection::receive_raw(int* lenga){
 	char buffo[MAX_MSG+1];
-	printf("Entered in receive_raw\n");
-	printf("Before recv\n");
 	*lenga = recv(conn_id,
 			buffo,
 			MAX_MSG,
 			0);
-	printf("after recv\tlen = %d\n", *lenga);
 	if(*lenga <= 0)	return NULL;
 	return duplica(buffo, lenga);
 }
 
 bool Connection::send(char* msg){
 	fflush(stdout);	
-	printf("Entering Connection::send()\n");
 	
 	//msg[strlen(msg)] = '\0';
-	printf("Before send_raw()\n");
 	return send_raw((void*) msg, strlen(msg)+1);
 }
 
 char* Connection::receive(){
-	printf("Entered in Connection::receive()\n");
 	int len = 0;
-	printf("Connection::receive()\tlen = %s\n", len);
 	char* ret = (char*)receive_raw(&len);
 	if(ret == NULL)	return NULL;
 	ret[len] = '\0';
@@ -194,8 +182,6 @@ Connection* ServerTCP::accept(){
 			(socklen_t*)&addrlen);
 	
 	sender = new Address(sender_addr);
-	printf("Accepted connection from %s\nconn_id: %d\n",
-		sender->to_string(), conn_id);
 	if(conn_id <= 0)	return NULL;
 	ret = new Connection(conn_id, false);
 	connections.push_back(*ret);
@@ -238,10 +224,6 @@ bool ClientTCP::connect(Address server){
 		(struct sockaddr*) &server_addr,
 		(socklen_t) sizeof(struct sockaddr_in));
 	connection = new Connection(sock_id, true);
-
-	printf("connect() = %d\n", ret);
-
-
 	return ret;
 }
 
