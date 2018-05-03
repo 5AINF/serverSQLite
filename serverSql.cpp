@@ -1,3 +1,8 @@
+/*
+Author: Damiano Lorenzo, Vertone Diego
+Github repository: https://github.com/5AINF/serverSQLite
+*/
+
 #include "socket_tcp.hpp"
 #include <stdio.h>
 #include "sqlite3.h"
