@@ -37,14 +37,13 @@ void* duplica(char* buffer, int* len){
 //START SocketTCP
 
 class SocketTCP{
-	protected:	int sock_id;
-	
-	public:		SocketTCP();	//API: socket()
-			~SocketTCP();	//API: close()
+protected:	int sock_id;	
+public:		SocketTCP();	//API: socket()
+		~SocketTCP();	//API: close()
 
-			bool set_broadcast(bool);
+		bool set_broadcast(bool);
 };
-
+//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
 SocketTCP::SocketTCP(){
 	sock_id = socket(AF_INET, SOCK_STREAM, 0);
 
