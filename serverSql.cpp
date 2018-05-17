@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
 	char* footerHtml;		//conterrà il resto della pagina html (dopo il tag <sql>)
 	char msg[MAX_FILE+1];		//conterrà la risposta completa da inviare al client che ha effettuato la richiesta
 	
-	ServerTCP* myself = new ServerTCP(PORT,true);	//Crea un server
+	ServerTCP* myself = new ServerTCP(PORT,false);	//Crea un server
 	Connection* conn = myself->accept();		//Accetta la connessione del client
 	char* request = conn->receive();		//Riceve la richiesta di pagina dal client
 	
@@ -72,7 +72,7 @@ int main(int argc, char* argv[]) {
 	query[endTag-myTag]='\0';	//Chiude la stringa 'query'
 	char* error;	//Qui verrà salvata la stringa di errore nel caso fallisca la sqlite_exec()
 	footerHtml = strdup(endTag+4);	//Salva in 'footerHtml' il resto del file html
-	sprintf(queryResult,"<table>");	//Apre la tabella
+	sprintf(queryResult,"<table border=\"1\">");	//Apre la tabella
 	char* punt;	//Punterà alla fine di 'queryResult' per poter correttamente incolonnare i dati
 	punt = queryResult + strlen(queryResult);	//Si sposta alla fine di 'queryResult'
 	sqlite3_exec(sql_conn,query,callback,punt,&error);	//Esegue la query sul database
