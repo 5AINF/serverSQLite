@@ -43,10 +43,9 @@ public:		SocketTCP();	//API: socket()
 
 		bool set_broadcast(bool);
 };
-//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
+
 SocketTCP::SocketTCP(){
 	sock_id = socket(AF_INET, SOCK_STREAM, 0);
-
 }
 
 SocketTCP::~SocketTCP(){
@@ -70,20 +69,18 @@ bool SocketTCP::set_broadcast(bool broadcast){
 //START Connection
 
 class Connection{
-	private:	int conn_id;
-			bool is_fuffa;
+private:	int conn_id;
+		bool is_fuffa;
 //if fuffa is true, the connection is a fake connection and the
 //connection ID is a socket ID in disguise.
-
-	public:		Connection(int id_conn, bool fuffa); 
-			~Connection();		
-
-			bool send_raw(void*, int); //API: send()
-			void* receive_raw(int* len);
-			//API: recv()
-			bool send(char* msg);
-			char* receive();
-			int get_id();
+public:		Connection(int id_conn, bool fuffa); 
+		~Connection();		
+		bool send_raw(void*, int); //API: send()
+		void* receive_raw(int* len);
+		//API: recv()
+		bool send(char* msg);
+		char* receive();
+		int get_id();
 };
 
 int Connection::get_id(){
@@ -112,7 +109,6 @@ void* Connection::receive_raw(int* lenga){
 
 bool Connection::send(char* msg){
 	fflush(stdout);	
-	
 	//msg[strlen(msg)] = '\0';
 	return send_raw((void*) msg, strlen(msg)+1);
 }
@@ -134,14 +130,14 @@ Connection::~Connection(){
 //START ServerTCP
 
 class ServerTCP: public SocketTCP{
-	//Inherits from SocketTCP
-	private:	std::list<Connection> connections;
-	public:		ServerTCP(int port, bool loopback);
-			//API: bind() | listen()
-			~ServerTCP();
-			void send_everyone(char* msg);
-			void disconnect(Connection c);
-			Connection* accept(); //API: accept()
+//Inherits from SocketTCP
+private:	std::list<Connection> connections;
+public:		ServerTCP(int port, bool loopback);
+		//API: bind() | listen()
+		~ServerTCP();
+		void send_everyone(char* msg);
+		void disconnect(Connection c);
+		Connection* accept(); //API: accept()
 };
 
 void ServerTCP::disconnect(Connection c){
@@ -192,18 +188,16 @@ Connection* ServerTCP::accept(){
 //START ClientTCP
 
 class ClientTCP: public SocketTCP{
-	//Inherits from SocketTCP
-	private:	Connection* connection;
-
-	public:		ClientTCP();
-			//API: connect()
-			~ClientTCP();
-
-			bool connect(Address);
-			bool send(char* message);
-			bool send_raw(void* message, int len);
-			char* receive();
-			void* receive_raw(int* len);
+//Inherits from SocketTCP
+private:	Connection* connection;
+public:		ClientTCP();
+		//API: connect()
+		~ClientTCP();
+		bool connect(Address);
+		bool send(char* message);
+		bool send_raw(void* message, int len);
+		char* receive();
+		void* receive_raw(int* len);
 };
 
 void* ClientTCP::receive_raw(int* len){
